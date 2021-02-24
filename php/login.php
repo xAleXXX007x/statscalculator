@@ -23,25 +23,16 @@
   $collection = $client->$DB_NAME->$USERS_TABLE;
 
   if($collection) {
-    $hashPassword = password_hash($password, PASSWORD_DEFAULT);
     $result = $collection->find(array($LOGIN_COLUMN => $login));
-    $user = array();
-
-    foreach ($result as $row) {
-      foreach ($row as $key => $value) {
-        $user[$key] = $value;
-      }
-    }
-
-    var_dump($user);
+    $user = json_decode(json_encode($result->toArray()), true)[0];
 
     $errorText = '';
     
-    if (!$user or !password_verify($password, $user[$PASSWORD_COLUMN])) {
+    if (!$user or array_key_exists($PASSWORD_COLUMN, $user) and !password_verify($password, $user[$PASSWORD_COLUMN])) {
       $errorText = 'Неверный логин или пароль';
     }
 
-    if ($user and intval($user[$BANNED_COLUMN]) != 0) {
+    if ($user and array_key_exists($BANNED_COLUMN, $user) and intval($user[$BANNED_COLUMN]) != 0) {
       $errorText = 'Вы забанены!';
     }
 

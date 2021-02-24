@@ -7,32 +7,35 @@
   $GLOBALS['COOKIE_TIME'] = 3600 * 24 * 365;
 
   $GLOBALS['USERS_TABLE'] = "users";
-  $GLOBALS['LOGIN_COLUMN'] = "user_login";
-  $GLOBALS['PASSWORD_COLUMN'] = "user_password";
+  $GLOBALS['LOGIN_COLUMN'] = "character";
+  $GLOBALS['PASSWORD_COLUMN'] = "password";
   $GLOBALS['BANNED_COLUMN'] = "banned";
 
-  $GLOBALS['RESPECS_COLUMN'] = "respecs";
+  $GLOBALS['RESPECS_COLUMN'] = "re-specs";
 
-  $GLOBALS['EST_COLUMN'] = "estitence";
-  $GLOBALS['PERK_COLUMN'] = "perk";
-  $GLOBALS['STAT_STR_COLUMN'] = "strength";
-  $GLOBALS['STAT_PER_COLUMN'] = "perception";
-  $GLOBALS['STAT_END_COLUMN'] = "endurance";
-  $GLOBALS['STAT_REF_COLUMN'] = "reflexes";
-  $GLOBALS['STAT_AGI_COLUMN'] = "agility";
-  $GLOBALS['STAT_LCK_COLUMN'] = "luck";
+  $GLOBALS['SPECIAL_COLUMN'] = "special_stats";
+  $GLOBALS['EST_COLUMN'] = "est";
+  $GLOBALS['PERK_COLUMN'] = "extra_perk_points";
+  $GLOBALS['STATS_COLUMN'] = "attributes";
+  $GLOBALS['STAT_STR_COLUMN'] = "STR";
+  $GLOBALS['STAT_PER_COLUMN'] = "PER";
+  $GLOBALS['STAT_END_COLUMN'] = "END";
+  $GLOBALS['STAT_REF_COLUMN'] = "REF";
+  $GLOBALS['STAT_AGI_COLUMN'] = "AGI";
+  $GLOBALS['STAT_LCK_COLUMN'] = "LUCK";
 
-  $GLOBALS['SKILL_PSY_COLUMN'] = "psychology";
-  $GLOBALS['SKILL_MNG_COLUMN'] = "management";
-  $GLOBALS['SKILL_THF_COLUMN'] = "thievery";
-  $GLOBALS['SKILL_SRV_COLUMN'] = "survival";
-  $GLOBALS['SKILL_WRK_COLUMN'] = "work";
-  $GLOBALS['SKILL_BIO_COLUMN'] = "biology";
-  $GLOBALS['SKILL_ENG_COLUMN'] = "engineering";
-  $GLOBALS['SKILL_MGC_COLUMN'] = "magic";
-  $GLOBALS['SKILL_RSR_COLUMN'] = "research";
-  $GLOBALS['SKILL_SMT_COLUMN'] = "smithing";
-  $GLOBALS['SKILL_ARC_COLUMN'] = "arcane";
+  $GLOBALS['SKILLS_COLUMN'] = "skills";
+  $GLOBALS['SKILL_PSY_COLUMN'] = "Psychology";
+  $GLOBALS['SKILL_MNG_COLUMN'] = "Management";
+  $GLOBALS['SKILL_THF_COLUMN'] = "Thievery";
+  $GLOBALS['SKILL_SRV_COLUMN'] = "Survival";
+  $GLOBALS['SKILL_WRK_COLUMN'] = "Hardworking";
+  $GLOBALS['SKILL_BIO_COLUMN'] = "Biology";
+  $GLOBALS['SKILL_ENG_COLUMN'] = "Engineering";
+  $GLOBALS['SKILL_MGC_COLUMN'] = "Magic";
+  $GLOBALS['SKILL_RSR_COLUMN'] = "Research";
+  $GLOBALS['SKILL_SMT_COLUMN'] = "Blacksmith";
+  $GLOBALS['SKILL_ARC_COLUMN'] = "Magical";
 
   $GLOBALS['STAT_MIN'] = 0;
   $GLOBALS['STAT_MAX'] = 25;
