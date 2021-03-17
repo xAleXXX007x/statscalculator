@@ -1,15 +1,22 @@
 <?php
-  $GLOBALS['DB_ADDRESS'] = "localhost";
-  $GLOBALS['DB_USER'] = "";
+  $GLOBALS['MONGODB_ADDRESS'] = "localhost";
+  $GLOBALS['MONGODB_USER'] = "";
+  $GLOBALS['MONGODB_PASSWORD'] = "";
+  $GLOBALS['MONGODB_NAME'] = "users";
+
+  $GLOBALS['DB_ADDRESS'] = "localhost:3307";
+  $GLOBALS['DB_USER'] = "root";
   $GLOBALS['DB_PASSWORD'] = "";
   $GLOBALS['DB_NAME'] = "users";
 
   $GLOBALS['COOKIE_TIME'] = 3600 * 24 * 365;
 
   $GLOBALS['USERS_TABLE'] = "users";
-  $GLOBALS['LOGIN_COLUMN'] = "character";
-  $GLOBALS['PASSWORD_COLUMN'] = "password";
+  $GLOBALS['LOGIN_COLUMN'] = "user_login";
+  $GLOBALS['PASSWORD_COLUMN'] = "user_password";
   $GLOBALS['BANNED_COLUMN'] = "banned";
+
+  $GLOBALS['CHARACTER_COLUMN'] = "character";
 
   $GLOBALS['RESPECS_COLUMN'] = "re-specs";
 

@@ -39,9 +39,10 @@
         <?php 
           require_once './settings.php';
           include_once './lib/stats.php';
-          $user = $_SESSION['user']; 
+          require_once './vendor/autoload.php';
+          $character = init_character($_SESSION['user'][$LOGIN_COLUMN]); 
 
-          $freeEst = get_free_estitence($user);
+          $freeEst = get_free_estitence($character);
 
           $stats = array(
             array("id" => $STAT_STR_COLUMN, "name" => "Сила"),
@@ -67,7 +68,7 @@
           );
         ?>
 
-        <h5 class="text-center">Доступно перераспределений: <?php echo intval($user[$RESPECS_COLUMN]); ?></h5>
+        <h5 class="text-center">Доступно перераспределений: <?php echo intval($character[$RESPECS_COLUMN]); ?></h5>
         <h5 class="text-center">Свободная эститенция: <?php echo $freeEst ?></h5>
 
         <form action="php/respec.php" method="POST">
@@ -99,7 +100,7 @@
                 <div class="form-group row">
                   <label for="<?php echo $stat["id"] ?>" class="col-4 col-form-label"><?php echo $stat["name"] ?>:</label>
                   <div class="col-3">
-                    <input type="number" class="form-control" name="<?php echo $stat["id"] ?>" id="<?php echo $stat["id"] ?>" value="<?php echo $user[$STATS_COLUMN][$stat["id"]] ?>" min="<?php echo $STAT_MIN ?>" max="<?php echo $STAT_MAX ?>" <?php if ($user[$RESPECS_COLUMN] <= 0) { echo 'disabled'; }?>>
+                    <input type="number" class="form-control" name="<?php echo $stat["id"] ?>" id="<?php echo $stat["id"] ?>" value="<?php echo $character[$STATS_COLUMN][$stat["id"]] ?>" min="<?php echo $STAT_MIN ?>" max="<?php echo $STAT_MAX ?>" <?php if ($character[$RESPECS_COLUMN] <= 0) { echo 'disabled'; }?>>
                   </div>
                 </div>
               </div>
@@ -111,7 +112,7 @@
                 <div class="form-group row">
                   <label for="<?php echo $skill["id"] ?>" class="col-4 col-form-label"><?php echo $skill["name"] ?>:</label>
                   <div class="col-3">
-                    <input type="number" class="form-control" name="<?php echo $skill["id"] ?>" id="<?php echo $skill["id"] ?>" value="<?php echo $user[$SKILLS_COLUMN][$skill["id"]] ?>" min="<?php echo $SKILL_MIN ?>" max="<?php echo $SKILL_MAX ?>" <?php if ($user[$RESPECS_COLUMN] <= 0) { echo 'disabled'; }?>>
+                    <input type="number" class="form-control" name="<?php echo $skill["id"] ?>" id="<?php echo $skill["id"] ?>" value="<?php echo $character[$SKILLS_COLUMN][$skill["id"]] ?>" min="<?php echo $SKILL_MIN ?>" max="<?php echo $SKILL_MAX ?>" <?php if ($character[$RESPECS_COLUMN] <= 0) { echo 'disabled'; }?>>
                   </div>
                 </div>
               </div>
@@ -132,7 +133,7 @@
               <div class="form-group row">
                 <label for="<?php echo $PERK_COLUMN ?>" class="col-4 col-form-label">Перки:</label>
                 <div class="col-3">
-                  <input type="number" class="form-control" name="<?php echo $PERK_COLUMN ?>" id="<?php echo $PERK_COLUMN ?>" value="<?php echo $user[$SPECIAL_COLUMN][$PERK_COLUMN] ?>" min="<?php echo $PERK_MIN ?>" max="<?php echo $PERK_MAX ?>" <?php if ($user[$RESPECS_COLUMN] <= 0) { echo 'disabled'; }?>>
+                  <input type="number" class="form-control" name="<?php echo $PERK_COLUMN ?>" id="<?php echo $PERK_COLUMN ?>" value="<?php echo $character[$SPECIAL_COLUMN][$PERK_COLUMN] ?>" min="<?php echo $PERK_MIN ?>" max="<?php echo $PERK_MAX ?>" <?php if ($character[$RESPECS_COLUMN] <= 0) { echo 'disabled'; }?>>
                 </div>
               </div>
             </div>
@@ -140,7 +141,7 @@
 
           <div class="form-group row">
             <div class="col px-0">
-              <button class="btn btn-primary btn-lg btn-block mt-2" type="submit" <?php if ($user[$RESPECS_COLUMN] <= 0) { echo 'disabled'; }?>>Сохранить</button>
+              <button class="btn btn-primary btn-lg btn-block mt-2" type="submit" <?php if ($character[$RESPECS_COLUMN] <= 0) { echo 'disabled'; }?>>Сохранить</button>
             </div>
           </div>
         </form>

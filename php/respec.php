@@ -3,51 +3,50 @@
   include_once '../lib/stats.php';
   require '../vendor/autoload.php';
 
-
   if (session_status() != 2) {
     session_start();
   }
 
-  $user = $_SESSION['user'];
+  $character = $_SESSION['character'];
 
-  $curr = get_current_character_data($user);
-  $new = get_character_data($user);
+  $curr = get_current_character_data($character);
+  $new = get_character_data($character);
+
+  $errorText = validate($new);
 
   if ($curr == $new) {
     $errorText = "Вы не внесли изменений в характеристики и навыки!";
   }
 
-  $errorText = validate($new);
-
-  if ($user[$RESPECS_COLUMN] <= 0) {
+  if ($character[$RESPECS_COLUMN] <= 0) {
     $errorText = "У Вас нет доступных перераспределений!";
   }
 
   if (strcmp($errorText, '') == 0) {
     $dbLogin = '';
 
-    if (strcmp($DB_USER, '') != 0) {
-      $dbLogin = $DB_USER;
+    if (strcmp($MONGODB_USER, '') != 0) {
+      $dbLogin = $MONGODB_USER;
   
-      if (strcmp($DB_PASSWORD, '') != 0) {
-        $dbLogin = $dbLogin.':'.$DB_PASSWORD;
+      if (strcmp($MONGODB_PASSWORD, '') != 0) {
+        $dbLogin = $dbLogin.':'.$MONGODB_PASSWORD;
       }
   
       $dbLogin = $dbLogin.'@';
     }
   
-    $client = new MongoDB\Client("mongodb://{$dbLogin}{$DB_ADDRESS}");
-    $collection = $client->$DB_NAME->$USERS_TABLE;
+    $client = new MongoDB\Client("mongodb://{$dbLogin}{$MONGODB_ADDRESS}");
+    $collection = $client->$MONGODB_NAME->$USERS_TABLE;
 
     $new[$RESPECS_COLUMN]--;
-    $user[$RESPECS_COLUMN]--;
+    $character[$RESPECS_COLUMN]--;
 
-    $collection->updateOne(['_id' => $user['_id']], ['$set' => $new]);
+    $collection->updateOne(['_id' => $character['_id']], ['$set' => $new]);
   } else {
     $_SESSION['error'] = $errorText;
     echo $errorText;
   }
 
-  $_SESSION['user'] = get_user_stats($user, $new);
+  $_SESSION['character'] = get_character_stats($character, $new);
 
   header("Location: ../index.php");

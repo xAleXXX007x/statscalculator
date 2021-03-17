@@ -78,7 +78,7 @@
   }
 
   
-  function get_free_estitence($user) {
+  function get_free_estitence($character) {
     global $stats, $skills;
     $STATS_COLUMN = $GLOBALS['STATS_COLUMN'];
     $SKILLS_COLUMN = $GLOBALS['SKILLS_COLUMN'];
@@ -87,7 +87,7 @@
     $SKILL_COST = $GLOBALS['SKILL_COST'];
     $PERK_COLUMN = $GLOBALS['PERK_COLUMN'];
 
-    $characterData = get_current_character_data($user);
+    $characterData = get_current_character_data($character);
     $est = intval($characterData[$SPECIAL_COLUMN][$EST_COLUMN]);
     $estSum = 0;
 
@@ -108,7 +108,7 @@
     return $est - $estSum;
   }
 
-  function get_current_character_data($user) {
+  function get_current_character_data($character) {
     global $stats, $skills;
     $STATS_COLUMN = $GLOBALS['STATS_COLUMN'];
     $SKILLS_COLUMN = $GLOBALS['SKILLS_COLUMN'];
@@ -116,23 +116,23 @@
     $EST_COLUMN = $GLOBALS['EST_COLUMN'];
     $PERK_COLUMN = $GLOBALS['PERK_COLUMN'];
 
-    $characterData = array();
-    $characterData[$SPECIAL_COLUMN][$EST_COLUMN] = $user[$SPECIAL_COLUMN][$EST_COLUMN];
+    $characterData = $character;
+    $characterData[$SPECIAL_COLUMN][$EST_COLUMN] = intval($character[$SPECIAL_COLUMN][$EST_COLUMN]);
 
     foreach ($stats as $stat) {
-      $characterData[$STATS_COLUMN][$stat] = $user[$STATS_COLUMN][$stat];
+      $characterData[$STATS_COLUMN][$stat] = intval($character[$STATS_COLUMN][$stat]);
     }
 
     foreach ($skills as $skill) {
-      $characterData[$SKILLS_COLUMN][$skill] = $user[$SKILLS_COLUMN][$skill];
+      $characterData[$SKILLS_COLUMN][$skill] = intval($character[$SKILLS_COLUMN][$skill]);
     }
 
-    $characterData[$SPECIAL_COLUMN][$PERK_COLUMN] = $user[$SPECIAL_COLUMN][$PERK_COLUMN];
+    $characterData[$SPECIAL_COLUMN][$PERK_COLUMN] = intval($character[$SPECIAL_COLUMN][$PERK_COLUMN]);
 
     return $characterData;
   }
 
-  function get_character_data($user) {
+  function get_character_data($character) {
     global $stats, $skills;
     $STATS_COLUMN = $GLOBALS['STATS_COLUMN'];
     $SKILLS_COLUMN = $GLOBALS['SKILLS_COLUMN'];
@@ -140,23 +140,23 @@
     $EST_COLUMN = $GLOBALS['EST_COLUMN'];
     $PERK_COLUMN = $GLOBALS['PERK_COLUMN'];
 
-    $characterData = array();
-    $characterData[$SPECIAL_COLUMN][$EST_COLUMN] = $user[$SPECIAL_COLUMN][$EST_COLUMN];
+    $characterData = $character;
+    $characterData[$SPECIAL_COLUMN][$EST_COLUMN] = intval($character[$SPECIAL_COLUMN][$EST_COLUMN]);
 
     foreach ($stats as $stat) {
-      $characterData[$STATS_COLUMN][$stat] = $_POST[$stat];
+      $characterData[$STATS_COLUMN][$stat] = intval($_POST[$stat]);
     }
 
     foreach ($skills as $skill) {
-      $characterData[$SKILLS_COLUMN][$skill] = $_POST[$skill];
+      $characterData[$SKILLS_COLUMN][$skill] = intval($_POST[$skill]);
     }
 
-    $characterData[$SPECIAL_COLUMN][$PERK_COLUMN] = $_POST[$PERK_COLUMN];
+    $characterData[$SPECIAL_COLUMN][$PERK_COLUMN] = intval($_POST[$PERK_COLUMN]);
 
     return $characterData;
   }
 
-  function get_user_stats($user, $characterData) {
+  function get_character_stats($character, $characterData) {
     global $stats, $skills;
     $STATS_COLUMN = $GLOBALS['STATS_COLUMN'];
     $SKILLS_COLUMN = $GLOBALS['SKILLS_COLUMN'];
@@ -164,14 +164,49 @@
     $PERK_COLUMN = $GLOBALS['PERK_COLUMN'];
 
     foreach ($stats as $stat) {
-      $user[$STATS_COLUMN][$stat] = $characterData[$STATS_COLUMN][$stat];
+      $character[$STATS_COLUMN][$stat] = intval($characterData[$STATS_COLUMN][$stat]);
     }
 
     foreach ($skills as $skill) {
-      $user[$SKILLS_COLUMN][$skill] = $characterData[$SKILLS_COLUMN][$skill];
+      $character[$SKILLS_COLUMN][$skill] = intval($characterData[$SKILLS_COLUMN][$skill]);
     }
 
-    $user[$SPECIAL_COLUMN][$PERK_COLUMN] = $characterData[$SPECIAL_COLUMN][$PERK_COLUMN];
+    $character[$SPECIAL_COLUMN][$PERK_COLUMN] = intval($characterData[$SPECIAL_COLUMN][$PERK_COLUMN]);
 
-    return $user;
+    return $character;
+  }
+
+  function init_character($login) {
+    $MONGODB_USER = $GLOBALS['MONGODB_USER'];
+    $MONGODB_PASSWORD = $GLOBALS['MONGODB_PASSWORD'];
+    $MONGODB_ADDRESS = $GLOBALS['MONGODB_ADDRESS'];
+    $MONGODB_NAME = $GLOBALS['MONGODB_NAME'];
+    $USERS_TABLE = $GLOBALS['USERS_TABLE'];
+    $CHARACTER_COLUMN = $GLOBALS['CHARACTER_COLUMN'];
+    $LOGIN_COLUMN = $GLOBALS['LOGIN_COLUMN'];
+    
+    $dbLogin = '';
+  
+    if (strcmp($MONGODB_USER, '') != 0) {
+      $dbLogin = $MONGODB_USER;
+  
+      if (strcmp($MONGODB_PASSWORD, '') != 0) {
+        $dbLogin = $dbLogin.':'.$MONGODB_PASSWORD;
+      }
+  
+      $dbLogin = $dbLogin.'@';
+    }
+
+    $client = new MongoDB\Client("mongodb://{$dbLogin}{$MONGODB_ADDRESS}");
+    $collection = $client->$MONGODB_NAME->$USERS_TABLE;
+
+    if($collection) {
+      $_result = $collection->find(array($CHARACTER_COLUMN => $login));
+
+      if($_result) {
+        $character = json_decode(json_encode($_result->toArray()), true)[0];
+
+        return $character;
+      }
+    }
   }
